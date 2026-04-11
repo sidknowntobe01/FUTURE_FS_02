@@ -1,0 +1,60 @@
+# Node
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Environment
+backend/.env
+frontend/.env
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+
+# Database
+db.json
+*.db
+*.sqlite
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Development/Test only files
+populate.js
+seed.js
+test.js
+*.test.js
+*.spec.js
+
+# Dependencies
+yarn.lock
+
+# Mac
+.AppleDouble
+.LSOverride
+
+# Temp files
+*.tmp
+*.temp
+*~

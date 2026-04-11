@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Owner Login – Ydv Core Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #F97316; --primary-dark: #EA580C;
+      --secondary: #FBBF24; --accent: #FEF3C7;
+      --bg: #FFFBF5; --border: #FDE8CC;
+      --text-dark: #1C1917; --text-muted: #78716C;
+      --radius-md: 12px; --radius-lg: 20px; --radius-xl: 28px; --radius-full: 9999px;
+      --font-head: 'Outfit', sans-serif; --font-body: 'Inter', sans-serif;
+      --shadow-xl: 0 20px 60px rgba(249,115,22,0.18);
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(160deg, #FFFBF5 0%, #FEF3C7 50%, #FED7AA 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #fff;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      border: 1.5px solid var(--border);
+    }
+
+    /* Left Panel */
+    .login-left {
+      background: linear-gradient(160deg, var(--primary), var(--primary-dark));
+      padding: 56px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-left::before {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      top: -80px; right: -80px;
+    }
+    .login-left::after {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      bottom: -40px; left: -40px;
+    }
+    .ll-brand { position: relative; z-index: 1; }
+    .ll-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-head); font-size: 1.4rem; font-weight: 800;
+      color: #fff; margin-bottom: 48px;
+    }
+    .ll-logo-icon { font-size: 2rem; }
+    .ll-heading { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
+    .ll-sub { color: rgba(255,255,255,0.8); font-size: 0.92rem; line-height: 1.6; }
+    .ll-features { position: relative; z-index: 1; }
+    .ll-feature {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,255,255,0.9); font-size: 0.88rem;
+      margin-bottom: 12px;
+    }
+    .ll-feature span:first-child {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; flex-shrink: 0;
+    }
+
+    /* Right Panel */
+    .login-right { padding: 56px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .lr-title { font-family: var(--font-head); font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 6px; }
+    .lr-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 36px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+    .form-group label { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input {
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      background: var(--bg);
+      transition: var(--transition);
+      outline: none;
+    }
+    .form-group input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(249,115,22,0.12); }
+
+    .hint-box {
+      background: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .hint-box strong { color: var(--primary-dark); }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 4px 16px rgba(249,115,22,0.35);
+      cursor: pointer;
+      transition: var(--transition);
+      letter-spacing: 0.01em;
+    }
+    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(249,115,22,0.45); }
+    .btn-login:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .login-error {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: var(--radius-md);
+      color: #991B1B;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    .back-home {
+      display: block;
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .back-home:hover { color: var(--primary); }
+
+    @media (max-width: 640px) {
+      .login-wrapper { grid-template-columns: 1fr; }
+      .login-left { display: none; }
+      .login-right { padding: 40px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+  <!-- Left decorative panel -->
+  <div class="login-left">
+    <div class="ll-brand">
+      <div class="ll-logo">
+        <span class="ll-logo-icon">💪</span>
+        Ydv Core Fitness
+      </div>
+      <h2 class="ll-heading">Owner Dashboard Portal</h2>
+      <p class="ll-sub">Manage your gym, track members, monitor revenue and grow your business — all in one place.</p>
+    </div>
+    <div class="ll-features">
+      <div class="ll-feature"><span>👥</span> View all member details</div>
+      <div class="ll-feature"><span>📊</span> Revenue & growth analytics</div>
+      <div class="ll-feature"><span>🆕</span> Track new joinings daily</div>
+      <div class="ll-feature"><span>⚠️</span> Monitor expired memberships</div>
+      <div class="ll-feature"><span>🚪</span> See who left the gym</div>
+    </div>
+  </div>
+
+  <!-- Right login form -->
+  <div class="login-right">
+    <h1 class="lr-title">Welcome back! 👋</h1>
+    <p class="lr-sub">Sign in to access your gym management dashboard.</p>
+
+    <div class="hint-box">
+      💡 <strong>Demo Credentials:</strong><br/>
+      Email: <strong>admin@ydvfitness.com</strong><br/>
+      Password: <strong>Admin@123</strong>
+    </div>
+
+    <div class="form-group">
+      <label for="loginEmail">Email Address</label>
+      <input type="email" id="loginEmail" placeholder="admin@ydvfitness.com" value="admin@ydvfitness.com" autocomplete="email" />
+    </div>
+    <div class="form-group">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="Enter your password" value="Admin@123" autocomplete="current-password" />
+    </div>
+
+    <button class="btn-login" id="loginBtn">Sign In to Dashboard →</button>
+    <div class="login-error" id="loginError"></div>
+
+    <a href="../index.html" class="back-home">← Back to Ydv Core Fitness website</a>
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:5000/api';
+
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const btn   = document.getElementById('loginBtn');
+    const errEl = document.getElementById('loginError');
+    const email    = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+      showError('Please enter both email and password.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    errEl.style.display = 'none';
+
+    try {
+      const res  = await fetch(`${API}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || 'Login failed');
+
+      localStorage.setItem('sf_token', data.token);
+      localStorage.setItem('sf_admin', JSON.stringify(data.admin));
+      window.location.href = 'dashboard.html';
+
+    } catch (err) {
+      if (err.message.includes('Failed to fetch')) {
+        showError('Cannot connect to server. Please check if backend is running.');
+      } else {
+        showError(err.message);
+      }
+      btn.disabled = false;
+      btn.textContent = 'Sign In to Dashboard →';
+    }
+  });
+
+  function showError(msg) {
+    const el = document.getElementById('loginError');
+    el.textContent = '❌ ' + msg;
+    el.style.display = 'block';
+  }
+
+  // Enter key support
+  document.getElementById('loginPassword').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('loginBtn').click();
+  });
+
+  // Redirect if already logged in
+  if (localStorage.getItem('sf_token')) {
+    window.location.href = 'dashboard.html';
+  }
+</script>
+</body>
+</html>

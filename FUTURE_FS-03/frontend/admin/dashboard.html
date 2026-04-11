@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Owner Dashboard – Ydv Core Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="dash-layout">
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="logo-icon">💪</span>
+    <div>
+      <div class="brand-name">Ydv <span>Core</span></div>
+      <span class="brand-sub">Owner Portal</span>
+    </div>
+  </div>
+
+  <div class="sidebar-owner">
+    <div class="owner-card">
+      <div class="owner-avatar" id="ownerAvatar">O</div>
+      <div class="owner-info">
+        <div class="owner-name" id="ownerName">Gym Owner</div>
+        <div class="owner-role">🏋️ Owner</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <div class="nav-item active" data-section="overview" id="nav-overview">
+      <span class="nav-icon">📊</span> Overview
+    </div>
+    <div class="nav-item" data-section="members" id="nav-members">
+      <span class="nav-icon">👥</span> All Members
+      <span class="nav-badge" id="totalBadge">0</span>
+    </div>
+    <div class="nav-item" data-section="new-joinings" id="nav-new-joinings">
+      <span class="nav-icon">🆕</span> New Joinings
+      <span class="nav-badge" id="newBadge" style="background:#22C55E">0</span>
+    </div>
+    <div class="nav-item" data-section="active" id="nav-active">
+      <span class="nav-icon">✅</span> Active Members
+    </div>
+    <div class="nav-section-label">Attention</div>
+    <div class="nav-item" data-section="expired" id="nav-expired">
+      <span class="nav-icon">⏳</span> Expired Memberships
+      <span class="nav-badge" id="expiredBadge" style="background:#F59E0B">0</span>
+    </div>
+    <div class="nav-item" data-section="left" id="nav-left">
+      <span class="nav-icon">🚪</span> Left the Gym
+      <span class="nav-badge" id="leftBadge" style="background:#EF4444">0</span>
+    </div>
+    <div class="nav-section-label">Settings</div>
+    <div class="nav-item" id="nav-add">
+      <span class="nav-icon">➕</span> Add Member
+    </div>
+    <div class="nav-item" data-section="website" id="nav-website">
+      <span class="nav-icon">🌐</span> View Website
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="nav-item" id="logoutBtn">
+      <span class="nav-icon">🚪</span> Logout
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════ MAIN CONTENT ══════════ -->
+<div class="main-content">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="page-title" id="pageTitle">Overview</div>
+      <div class="page-subtitle" id="pageSubtitle">Welcome back! Here's your gym at a glance.</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="globalSearch" placeholder="Search members…" />
+      </div>
+      <button class="icon-btn" id="refreshBtn" title="Refresh">🔄</button>
+      <button class="icon-btn" id="addMemberTopBtn" title="Add Member">➕</button>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <div class="page-content">
+
+    <!-- ── OVERVIEW SECTION ── -->
+    <section class="page-section active" id="section-overview">
+      <!-- Stats Row -->
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card orange">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <div class="stat-label">Total Members</div>
+            <div class="stat-value" id="s-total">—</div>
+            <div class="stat-sub">All time</div>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-label">Active Members</div>
+            <div class="stat-value" id="s-active">—</div>
+            <div class="stat-sub up">Currently active</div>
+          </div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-icon">🆕</div>
+          <div class="stat-info">
+            <div class="stat-label">New This Month</div>
+            <div class="stat-value" id="s-newmonth">—</div>
+            <div class="stat-sub">Joined in <span id="currentMonthName"></span></div>
+          </div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-info">
+            <div class="stat-label">Expired</div>
+            <div class="stat-value" id="s-expired">—</div>
+            <div class="stat-sub down">Need renewal</div>
+          </div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon">🚪</div>
+          <div class="stat-info">
+            <div class="stat-label">Left Gym</div>
+            <div class="stat-value" id="s-left">—</div>
+            <div class="stat-sub">Churned</div>
+          </div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value" id="s-revenue">—</div>
+            <div class="stat-sub">Lifetime earnings</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="dash-grid-2">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📈 Monthly Joinings Trend</span>
+            <span style="font-size:0.78rem;color:var(--text-muted)">Last 6 months</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="joiningsChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🍩 Member Status</span>
+          </div>
+          <div class="card-body">
+            <div class="donut-container">
+              <div class="chart-container" style="height:180px;width:180px">
+                <canvas id="statusChart"></canvas>
+              </div>
+              <div class="donut-legend" id="donutLegend"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Members + Plan Breakdown -->
+      <div class="dash-grid-2">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🆕 Recent Joinings</span>
+            <button class="btn btn-outline btn-sm" id="seeAllBtn">See All</button>
+          </div>
+          <div id="recentMembersList">
+            <div class="loading-spinner"><div class="spinner"></div> Loading…</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">📦 Plan Distribution</span></div>
+          <div class="card-body">
+            <div class="chart-container" style="height:220px">
+              <canvas id="planChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ALL MEMBERS / FILTERED SECTIONS ── -->
+    <section class="page-section" id="section-members">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">👥 All Members</span>
+          <button class="btn btn-primary btn-sm" id="addFromTable">➕ Add Member</button>
+        </div>
+        <div id="memberTableContainer">
+          <div class="loading-spinner"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="section-new-joinings">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🆕 New Joinings This Month</span>
+        </div>
+        <div id="newJoiningsContainer">
+          <div class="loading-spinner"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="section-active">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✅ Active Members</span>
+        </div>
+        <div id="activeContainer">
+          <div class="loading-spinner"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="section-expired">
+      <div class="card" style="border-color:#FDE68A">
+        <div class="card-header">
+          <span class="card-title">⏳ Expired Memberships</span>
+          <span style="font-size:0.8rem;color:#92400E;background:#FFFBEB;padding:4px 12px;border-radius:99px;border:1px solid #FDE68A">Need renewal</span>
+        </div>
+        <div id="expiredContainer">
+          <div class="loading-spinner"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="section-left">
+      <div class="card" style="border-color:#FECACA">
+        <div class="card-header">
+          <span class="card-title">🚪 Members Who Left</span>
+          <span style="font-size:0.8rem;color:#991B1B;background:#FEF2F2;padding:4px 12px;border-radius:99px;border:1px solid #FECACA">Churned</span>
+        </div>
+        <div id="leftContainer">
+          <div class="loading-spinner"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="section-website">
+      <div class="card">
+        <div class="card-header"><span class="card-title">🌐 Public Website</span></div>
+        <div class="card-body" style="text-align:center;padding:60px 24px">
+          <div style="font-size:3rem;margin-bottom:16px">🌅</div>
+          <h3 style="margin-bottom:8px">Visit Ydv Core Fitness Website</h3>
+          <p style="color:var(--text-muted);margin-bottom:24px">View the public-facing website that attracts new members.</p>
+          <a href="../index.html" target="_blank" class="btn btn-primary">Open Website →</a>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page-content -->
+</div><!-- /main-content -->
+</div><!-- /dash-layout -->
+
+<!-- ══════════ ADD/EDIT MEMBER MODAL ══════════ -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add New Member</h3>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="memberForm">
+        <input type="hidden" id="memberId" />
+        <div class="form-grid-2">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="mName" required /></div>
+          <div class="form-group"><label>Email *</label><input type="email" id="mEmail" required /></div>
+          <div class="form-group"><label>Phone *</label><input type="tel" id="mPhone" required /></div>
+          <div class="form-group"><label>Age *</label><input type="number" id="mAge" min="10" max="100" required /></div>
+          <div class="form-group">
+            <label>Gender *</label>
+            <select id="mGender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Membership Plan *</label>
+            <select id="mPlan">
+              <option value="Basic">Basic – ₹999/month</option>
+              <option value="Standard">Standard – ₹2,499/3 months</option>
+              <option value="Premium">Premium – ₹5,999/year</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Joining Date</label>
+            <input type="date" id="mJoining" />
+          </div>
+          <div class="form-group">
+            <label>Expiry Date *</label>
+            <input type="date" id="mExpiry" required />
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="mStatus">
+              <option value="Active">Active</option>
+              <option value="Expired">Expired</option>
+              <option value="Left">Left</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fitness Goal</label>
+            <select id="mGoal">
+              <option value="General Fitness">General Fitness</option>
+              <option value="Weight Loss">Weight Loss</option>
+              <option value="Muscle Gain">Muscle Gain</option>
+              <option value="Endurance">Endurance</option>
+              <option value="Flexibility">Flexibility</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Amount Paid (₹)</label>
+            <input type="number" id="mAmount" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>Payment Mode</label>
+            <select id="mPayment">
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="Card">Card</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Address</label>
+            <input type="text" id="mAddress" placeholder="City / Area" />
+          </div>
+          <div class="form-group full">
+            <label>Notes</label>
+            <textarea id="mNotes" placeholder="Any special notes about this member…"></textarea>
+          </div>
+        </div>
+        <p id="formError" style="color:#DC2626;font-size:0.85rem;margin-bottom:12px;display:none"></p>
+        <div style="display:flex;gap:12px">
+          <button type="button" class="btn btn-outline" id="cancelModal">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1" id="saveBtn">Save Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ VIEW MEMBER MODAL ══════════ -->
+<div class="modal-overlay" id="viewModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Member Details</h3>
+      <button class="modal-close" id="viewModalClose">✕</button>
+    </div>
+    <div class="modal-body" id="viewModalBody">
+      <div class="loading-spinner"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DELETE CONFIRM MODAL ══════════ -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <h3>Delete Member</h3>
+      <button class="modal-close" id="delModalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:24px;color:var(--text-body)">Are you sure you want to delete <strong id="delMemberName"></strong>? This action cannot be undone.</p>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-outline" id="cancelDelete">Cancel</button>
+        <button class="btn btn-danger" style="flex:1" id="confirmDelete">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toastContainer"></div>
+
+<script src="../js/dashboard.js"></script>
+</body>
+</html>
